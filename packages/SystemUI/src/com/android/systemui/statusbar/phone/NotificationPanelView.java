@@ -77,6 +77,7 @@ public class NotificationPanelView extends PanelView {
     private static boolean mSwipeTriggered;
 
     private int mPullDown;
+    private int mSmartPullDown;
     private SettingsObserver mObserver;
     private float mAlpha;
     private int backgroundAlpha;
@@ -86,6 +87,7 @@ public class NotificationPanelView extends PanelView {
     class SettingsObserver extends ContentObserver {
 
         private Uri mPullDownUri;
+        private Uri mSmartPullDownUri;
         private Uri mAlphaUri;
         private Uri mBackgroundUri;
         private Uri mBackgroundLandscapeUri;
@@ -93,6 +95,7 @@ public class NotificationPanelView extends PanelView {
         SettingsObserver(Handler handler) {
             super(handler);
             mPullDownUri = Settings.System.getUriFor(Settings.System.QS_QUICK_PULLDOWN);
+            mSmartPullDownUri = Settings.System.getUriFor(Settings.System.QS_SMART_PULLDOWN);
             mAlphaUri = Settings.System.getUriFor(Settings.System.NOTIFICATION_BACKGROUND_ALPHA);
             mBackgroundUri = Settings.System.getUriFor(Settings.System.NOTIFICATION_BACKGROUND);
             mBackgroundLandscapeUri = Settings.System.getUriFor(Settings.System.NOTIFICATION_BACKGROUND_LANDSCAPE);
@@ -100,6 +103,7 @@ public class NotificationPanelView extends PanelView {
 
         private void observe() {
             mContext.getContentResolver().registerContentObserver(mPullDownUri, false, this);
+            mContext.getContentResolver().registerContentObserver(mSmartPullDownUri, false, this);
             mContext.getContentResolver().registerContentObserver(mAlphaUri, false, this);
             mContext.getContentResolver().registerContentObserver(mBackgroundUri, false, this);
             mContext.getContentResolver().registerContentObserver(mBackgroundLandscapeUri, false, this);
@@ -114,6 +118,11 @@ public class NotificationPanelView extends PanelView {
             if (uri == null || uri.compareTo(mPullDownUri)==0) {
                 mPullDown = Settings.System.getIntForUser(mContext.getContentResolver(),
                         Settings.System.QS_QUICK_PULLDOWN, 0, UserHandle.USER_CURRENT);
+                if (uri != null) return;
+            }
+            if (uri == null || uri.compareTo(mSmartPullDownUri)==0) {
+                mSmartPullDown = Settings.System.getIntForUser(mContext.getContentResolver(),
+                        Settings.System.QS_SMART_PULLDOWN, 0, UserHandle.USER_CURRENT);
                 if (uri != null) return;
             }
             if (uri == null || uri.compareTo(mAlphaUri)==0) {

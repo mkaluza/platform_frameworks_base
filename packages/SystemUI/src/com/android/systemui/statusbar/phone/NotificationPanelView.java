@@ -243,7 +243,11 @@ public class NotificationPanelView extends PanelView {
                     if (mPullDown==1 && event.getX(0) > getWidth() * (1.0f - STATUS_BAR_SETTINGS_RIGHT_PERCENTAGE) ||
                         mPullDown==2 && event.getX(0) < getWidth() * (1.0f - STATUS_BAR_SETTINGS_LEFT_PERCENTAGE)) {
                         flip = true;
-                    }
+                    } else if (mSmartPullDown == 1 && !mStatusBar.hasClearableNotifications()) {
+                        flip = true;
+                    } else if (mSmartPullDown == 2 && !mStatusBar.hasVisibleNotifications()) {
+                        flip = true;
+		    }
                     break;
                 case MotionEvent.ACTION_MOVE:
                     final float deltaX = Math.abs(event.getX(0) - mGestureStartX);

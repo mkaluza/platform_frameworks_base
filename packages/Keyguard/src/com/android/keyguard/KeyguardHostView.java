@@ -1898,7 +1898,8 @@ public class KeyguardHostView extends KeyguardViewBase {
         final boolean configDisabled = res.getBoolean(R.bool.config_disableMenuKeyInLockScreen);
         final boolean isTestHarness = ActivityManager.isRunningInTestHarness();
         final boolean fileOverride = (new File(ENABLE_MENU_KEY_FILE)).exists();
-        return !configDisabled || isTestHarness || fileOverride || mMenuOverride;
+        return (!configDisabled || fileOverride || isTestHarness) && mMenuOverride;	//FIXME not sure if isTestHarness should be ORed or ANDed like below
+        //return (!configDisabled || fileOverride) && (isTestHarness || mMenuOverride);
     }
 
     public void goToWidget(int appWidgetId) {
